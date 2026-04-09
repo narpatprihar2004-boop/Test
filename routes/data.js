@@ -44,11 +44,16 @@ router.post('/collect-data', (req, res) => {
 
 router.get('/client-data', (req, res) => {
   const { userId } = req.query;
+
+  if (!userId) {
+    return res.status(400).json({ error: 'userId is required.' });
+  }
+
   const db = readDb();
 
   const records = db.submissions
-    .filter((entry) => (userId ? entry.userId === userId : true))
-    .sort((a, b) => a.userId.localeCompare(b.userId));
+    .filter((entry) => entry.userId === userId)
+    .sort((a, b) => a.capturedAt.localeCompare(b.capturedAt));
 
   return res.json({ records });
 });

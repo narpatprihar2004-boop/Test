@@ -41,7 +41,16 @@ router.post('/forms/:formId/host', (req, res) => {
       user.credits -= 30;
       form.hosted = true;
       form.hostedAt = new Date().toISOString();
-      form.hostingEndpoint = `/api/collect-data?formId=${form.id}`;
+      form.hostingEndpoint = '/api/collect-data';
+      form.hostingRequest = {
+        formId: form.id,
+        userId: form.userId,
+        payload: {
+          name: '',
+          email: '',
+          message: ''
+        }
+      };
       return form;
     });
 
