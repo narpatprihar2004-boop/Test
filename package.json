@@ -1,0 +1,15 @@
+{
+  "name": "global-support-lead-management",
+  "version": "1.0.0",
+  "description": "Telegram Mini App style SaaS dashboard for support and lead management.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "bot": "node telegram-bot.js",
+    "check": "node --check server.js && node --check telegram-bot.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
