@@ -1,0 +1,48 @@
+{
+  "users": [
+    {
+      "id": "u1001",
+      "name": "ZeroCool",
+      "role": "Operator",
+      "credits": 120
+    },
+    {
+      "id": "u1002",
+      "name": "Trinity",
+      "role": "Analyst",
+      "credits": 75
+    }
+  ],
+  "forms": [],
+  "submissions": [],
+  "marketplace": [
+    {
+      "id": "mkt-101",
+      "title": "SaaS Onboarding Hyper-Lead Form",
+      "price": 20,
+      "seller": "CipherX",
+      "conversionScore": "9.4"
+    },
+    {
+      "id": "mkt-102",
+      "title": "Enterprise Incident Escalation Template",
+      "price": 26,
+      "seller": "GhostNode",
+      "conversionScore": "9.1"
+    }
+  ],
+  "vipTemplates": [
+    {
+      "id": "vip-001",
+      "title": "BlackNet Zero-Trust Intake",
+      "price": 120,
+      "classification": "Tier-1"
+    },
+    {
+      "id": "vip-002",
+      "title": "Quantum SOC Breach Reporter",
+      "price": 220,
+      "classification": "Tier-0"
+    }
+  ]
+}
