@@ -4,23 +4,30 @@ const { readDb, withDb } = require('../db');
 const router = express.Router();
 
 router.post('/collect-data', (req, res) => {
-  const { formId, userId, payload } = req.body;
+  const formId = req.body.formId || req.query.formId;
+  const userId = req.body.userId;
+  const payload = req.body.payload || req.body;
 
-  if (!formId || !userId || !payload) {
-    return res.status(400).json({ error: 'formId, userId, and payload are required.' });
+  if (!formId || !payload || typeof payload !== 'object') {
+    return res.status(400).json({ error: 'formId and payload are required.' });
   }
 
   try {
     const record = withDb((db) => {
-      const form = db.forms.find((entry) => entry.id === formId && entry.userId === userId);
+      const form = db.forms.find((entry) => entry.id === formId);
       if (!form) {
         throw new Error('FORM_NOT_FOUND');
       }
 
+      if (userId && form.userId !== userId) {
+        throw new Error('FORM_USER_MISMATCH');
+      }
+
+      const ownerUserId = form.userId;
       const submission = {
         id: `sub-${Date.now()}`,
         formId,
-        userId,
+        userId: ownerUserId,
         name: payload.name || '',
         email: payload.email || '',
         message: payload.message || '',
@@ -34,7 +41,7 @@ router.post('/collect-data', (req, res) => {
 
     return res.status(201).json({ message: 'Lead captured securely.', record });
   } catch (error) {
-    if (error.message === 'FORM_NOT_FOUND') {
+    if (error.message === 'FORM_NOT_FOUND' || error.message === 'FORM_USER_MISMATCH') {
       return res.status(404).json({ error: 'Form not found or user mismatch.' });
     }
 
